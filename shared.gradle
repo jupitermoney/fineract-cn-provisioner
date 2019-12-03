@@ -62,7 +62,8 @@ dependencies {
     compile(
             [group: 'com.google.code.findbugs', name: 'jsr305'],
             [group: 'org.apache.fineract.cn', name: 'postgresql', version: '0.1.0-BUILD-SNAPSHOT'],
-            [group: 'postgresql', name: 'postgresql', version: '9.0-801.jdbc4']
+            [group: 'postgresql', name: 'postgresql', version: '9.0-801.jdbc4'],
+            [group: 'org.projectlombok', name: 'lombok', version: '1.18.10']
     )
 
     testCompile(
