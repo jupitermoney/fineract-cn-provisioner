@@ -98,8 +98,8 @@ public class ProvisionerServiceConfig extends WebMvcConfigurerAdapter {
     final PooledConnectionFactory pooledConnectionFactory = new PooledConnectionFactory();
     final ActiveMQConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory();
     activeMQConnectionFactory.setBrokerURL(activeMQProperties.getBrokerUrl());
-    activeMQConnectionFactory.setUserName("fineract");
-    activeMQConnectionFactory.setPassword("fineract1234");
+    activeMQConnectionFactory.setUserName(activeMQProperties.getUsername());
+    activeMQConnectionFactory.setPassword(activeMQProperties.getPassword());
     pooledConnectionFactory.setConnectionFactory(activeMQConnectionFactory);
     return pooledConnectionFactory;
   }

@@ -34,8 +34,14 @@ public class ProvisionerActiveMQProperties {
   @SuppressWarnings("WeakerAccess")
   final public static String ACTIVEMQ_CONCURRENCY_DEFAULT = "3-10";
 
+  final public static String ACTIVEMQ_USERNAME = "activeme.username";
+
+  final public static String ACTIVEMQ_PASSWORD = "activeme.password";
+
   private String brokerUrl = ACTIVEMQ_BROKER_URL_DEFAULT;
   private String concurrency = ACTIVEMQ_CONCURRENCY_DEFAULT;
+  private String username = ACTIVEMQ_USERNAME;
+  private String password = ACTIVEMQ_PASSWORD;
 
   public ProvisionerActiveMQProperties() {
   }
@@ -54,5 +60,21 @@ public class ProvisionerActiveMQProperties {
 
   public void setConcurrency(String concurrency) {
     this.concurrency = concurrency;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
   }
 }
