@@ -10,6 +10,7 @@ jobs:
       ECR_REGISTRY: 516580504223.dkr.ecr.ap-south-1.amazonaws.com
       ECR_REPOSITORY: ${{ github.event.repository.name }}
       DEV_REGISTRY: "516580504223"
+      CACHE_TAG: "docker.pkg.github.com/jupitermoney/fineract-cn-provisioner/cache:develop"
 
     steps:
       - uses: actions/checkout@v1
@@ -24,9 +25,10 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1.0.1
         with:
           registries: ${{ env.DEV_REGISTRY }}
+      - uses: crazy-max/ghaction-docker-buildx@v1
       - name: Build, tag, and push image to Amazon ECR
         run: |
-          docker build --build-arg BUILDKIT_INLINE_CACHE=1 --build-arg GRADLE_ARGS="-PARTIFACTORY_USER=jm-ci-bot -PARTIFACTORY_PASSWORD=${{ secrets.REPO_TOKEN }}" -t $ECR_REGISTRY/$ECR_REPOSITORY:$GITHUB_REF_SLUG-$GITHUB_SHA_SHORT .
+          docker buildx build --build-arg BUILDKIT_INLINE_CACHE=1 --build-arg GRADLE_ARGS="-PARTIFACTORY_USER=jm-ci-bot -PARTIFACTORY_PASSWORD=${{ secrets.REPO_TOKEN }}" -t $ECR_REGISTRY/$ECR_REPOSITORY:$GITHUB_REF_SLUG-$GITHUB_SHA_SHORT --cache-from=type=registry,ref=$CACHE_TAG --cache-to=type=registry,ref=$CACHE_TAG,mode=max .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$GITHUB_REF_SLUG-$GITHUB_SHA_SHORT
       - name: Additional tag for develop branch
         if: github.ref == 'refs/heads/master'
