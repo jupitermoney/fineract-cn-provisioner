@@ -17,10 +17,11 @@
 # under the License.
 #
 FROM openjdk:8-jdk-alpine AS builder
+ARG GRADLE_ARGS
 RUN mkdir builddir
 COPY . builddir
 WORKDIR builddir
-RUN ./gradlew publishToMavenLocal
+RUN ./gradlew $GRADLE_ARGS publishToMavenLocal
 
 
 FROM openjdk:8-jdk-alpine AS runner
@@ -29,10 +30,11 @@ ARG provisioner_port=2020
 
 ENV server.max-http-header-size=16384 \
     cassandra.clusterName="Test Cluster" \
+    JAVA_TOOL_OPTIONS="" \
     server.port=$provisioner_port
 
 WORKDIR /tmp
 
 COPY --from=builder /builddir/service/build/libs/service-0.1.0-BUILD-SNAPSHOT-boot.jar ./provisioner-service-boot.jar
 
-CMD ["java", "-jar", "provisioner-service-boot.jar"]
+CMD ["java","-Djava.security.egd=file:/dev/./urandom", "-jar", "provisioner-service-boot.jar"]

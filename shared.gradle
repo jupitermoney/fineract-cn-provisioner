@@ -42,6 +42,13 @@ tasks.withType(JavaCompile) {
 repositories {
     jcenter()
     mavenLocal()
+    maven {
+        url = uri("https://maven.pkg.github.com/jupitermoney/fineract-cn-command")
+        credentials {
+            username = "${ARTIFACTORY_USER}"
+            password = "${ARTIFACTORY_PASSWORD}"
+        }
+    }
     maven { url 'https://mifos.jfrog.io/mifos/libs-snapshot/' }
 }
 
