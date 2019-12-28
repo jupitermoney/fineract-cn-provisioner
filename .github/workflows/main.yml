@@ -2,12 +2,11 @@ name: Build & Push
 
 on: [push, pull_request]
 
-env:
-  DOCKER_CLI_EXPERIMENTAL: enabled
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
+      DOCKER_CLI_EXPERIMENTAL: enabled
       ECR_REGISTRY: 516580504223.dkr.ecr.ap-south-1.amazonaws.com
       ECR_REPOSITORY: ${{ github.event.repository.name }}
       DEV_REGISTRY: "516580504223"
@@ -25,9 +24,10 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1.0.1
         with:
           registries: ${{ env.DEV_REGISTRY }}
+      - uses: crazy-max/ghaction-docker-buildx@v1
       - name: Build, tag, and push image to Amazon ECR
         run: |
-          docker buildx build --build-arg GRADLE_ARGS="-PARTIFACTORY_USER=jm-ci-bot -PARTIFACTORY_PASSWORD=${{ secrets.REPO_TOKEN }}" -t $ECR_REGISTRY/$ECR_REPOSITORY:$GITHUB_REF_SLUG-$GITHUB_SHA_SHORT .
+          docker buildx build --load --build-arg GRADLE_ARGS="-PARTIFACTORY_USER=jm-ci-bot -PARTIFACTORY_PASSWORD=${{ secrets.REPO_TOKEN }}" -t $ECR_REGISTRY/$ECR_REPOSITORY:$GITHUB_REF_SLUG-$GITHUB_SHA_SHORT .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$GITHUB_REF_SLUG-$GITHUB_SHA_SHORT
       - name: Additional tag for develop branch
         if: github.ref == 'refs/heads/master'
