@@ -6,10 +6,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
+      DEV_REGISTRY: "516580504223"
       DOCKER_CLI_EXPERIMENTAL: enabled
       ECR_REGISTRY: 516580504223.dkr.ecr.ap-south-1.amazonaws.com
       ECR_REPOSITORY: ${{ github.event.repository.name }}
-      DEV_REGISTRY: "516580504223"
 
     steps:
       - uses: actions/checkout@v1
