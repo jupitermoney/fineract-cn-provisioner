@@ -1,4 +1,3 @@
-# syntax=docker/dockerfile:experimental
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -22,7 +21,7 @@ ARG GRADLE_ARGS
 RUN mkdir builddir
 COPY . builddir
 WORKDIR builddir
-RUN --mount=type=cache,id=gradle,target=/root/.gradle ./gradlew $GRADLE_ARGS publishToMavenLocal --no-daemon
+RUN ./gradlew $GRADLE_ARGS publishToMavenLocal
 
 
 FROM openjdk:8-jdk-alpine AS runner
